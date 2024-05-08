@@ -1,0 +1,119 @@
+{% extends 'index.html' %}
+{% block title %}Dashboard | LMS {% endblock title %}
+{% block profile %}
+{% url 'profile' student.student_id %}
+{% endblock profile %}
+{% block user %}
+{{ student.name }}
+{% endblock user %}
+{% block allCourses %}
+{% url 'courses' %}
+{% endblock %}
+{% block courses %}
+{% url 'myCourses' %}
+{% endblock %}
+{% block content %}
+<style>
+    /* Custom CSS for Course Cards */
+    .card_primary {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .cd {
+        width: 30rem !important;
+        margin: 1rem;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: transform 0.3s ease;
+    }
+
+    .cd:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-header,
+    .card-footer {
+        color: #fff;
+    }
+
+    /* Custom CSS for Breadcrumb */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 20px;
+        font-size: 18px;
+        border-radius: 5px;
+    }
+
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: "›";
+    }
+
+    /* Custom CSS for Text */
+    .text-secondary {
+        color: #6c757d !important;
+    }
+
+    /* Custom CSS for Button */
+    .btn-outline-dark {
+        color: #343a40;
+        border-color: #343a40;
+        transition: all 0.3s ease;
+    }
+
+    .btn-outline-dark:hover {
+        color: #fff;
+        background-color: #343a40;
+    }
+</style>
+
+<div>
+    <!-- Navigation links -->
+    <div class="container">
+        <div class="container shadow-sm">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb p-3">
+                    <li class="breadcrumb-item active" aria-current="page">My courses</li>
+                </ol>
+            </nav>
+        </div>
+        {% if courses %}
+        <!-- Course container -->
+        <div class="card_primary">
+            {% for course in courses %}
+            <!-- Individual course -->
+            <div class="cd card text-center">
+                <div class="card-header bg-primary">
+                    Dept. of {{ course.department }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.department }}-{{ course.code }} : {{ course.name }}</h5>
+                    <h5 class="card-title">{{ course.department }}-{{ course.code }}  Credit : {{ course.credit }}</h5>
+
+                    <a href="{% url 'course' course.code %}" class="btn btn-outline-dark px-5">Enter</a>
+                </div>
+                <div class="card-footer bg-dark">
+                    {% if course.faculty %}
+                    Course Teacher: {{ course.faculty.name }}
+                    Course Teacher: {{ course.credit }}
+
+
+                    {% else %}
+                    Teacher not assigned yet
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Individual course ends -->
+            {% endfor %}
+            <!-- Course container ends -->
+        </div>
+        {% else %}
+        <div class="text-center fs-5 text-secondary">
+            <p>You are not enrolled in any courses</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
