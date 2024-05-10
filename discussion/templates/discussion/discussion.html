@@ -1,0 +1,166 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block title %}Discussion | {{ course.name }} {% endblock title %}
+{% block profile %}
+{% if faculty  %} {% url 'profile' faculty.faculty_id %}
+{% else %} {% url 'profile' student.student_id %}
+{% endif %}
+{% endblock profile %}
+{% block user %}
+{% if faculty %} {{faculty.name}}
+{% else %} {{student.name}}
+{% endif %}
+{% endblock user %}
+{% block courses %}
+{% if faculty %}{% url 'facultyCourses' %} {% else %}
+{% url 'myCourses' %}
+{% endif %}
+{% endblock courses %}
+{% block allCourses %}
+{% url 'courses' %}
+{% endblock %}
+{% block content %}
+<style>
+    /* Custom CSS for Discussion Page */
+
+    /* Container Styles */
+    .container {
+        margin-top: 20px;
+    }
+
+    /* Navigation Links Styles */
+    .breadcrumb {
+        background-color: transparent;
+        padding: 0;
+        margin-bottom: 20px;
+        font-size: 18px;
+        border-radius: 5px;
+    }
+
+    .breadcrumb-item+.breadcrumb-item::before {
+        content: "›";
+    }
+
+    /* Discussion Container Styles */
+    .discussion-container {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* Discussion Form Styles */
+    .discussion-form {
+        margin-bottom: 20px;
+    }
+
+    .discussion-form .form-control {
+        border-radius: 20px;
+    }
+
+    .discussion-form .btn-primary {
+        border-radius: 20px;
+    }
+
+    /* Discussion Message Styles */
+    .discussion-message {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .discussion-message img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+    }
+
+    .discussion-message .author-name {
+        font-weight: bold;
+        color: #007bff; /* Author name color */
+    }
+
+    .discussion-message .time {
+        font-size: 12px;
+        color: #999;
+    }
+
+    .discussion-message p {
+        margin-top: 5px;
+    }
+</style>
+
+<div class="container">
+    <!-- Navigation Links -->
+    <div class="container shadow-sm">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3">
+                {% if faculty %}
+                <li class="breadcrumb-item fw-bold"><a style="color: #007bff" href="{% url 'facultyCourses' %}">My Courses</a></li>
+                <li class="breadcrumb-item fw-bold"><a style="color: #007bff" href="{% url 'faculty' course.code %}">{{ course.name }}</a></li>
+                {% else %}
+                <li class="breadcrumb-item fw-bold"><a style="color: #007bff" href="{% url 'myCourses' %}">My Courses</a></li>
+                <li class="breadcrumb-item fw-bold"><a style="color: #007bff" href="{% url 'course' course.code %}">{{ course.name }}</a></li>
+                {% endif %}
+                <li class="breadcrumb-item active animate__animated animate__backInRight" aria-current="page">Discussion</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- Navigation Links End -->
+
+    <div class="discussion-container">
+        <div class="discussion-form">
+            {% if faculty %}
+            <form action="{% url 'send_fac' course.code faculty.faculty_id %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    {{ form.content }}
+                    <button class="btn btn-primary mx-2 rounded" type="submit">Send</button>
+                </div>
+            </form>
+            {% else %}
+            <form action="{% url 'send' course.code student.student_id %}" method="POST">
+                {% csrf_token %}
+                <div class="input-group mb-3">
+                    {{ form.content }}
+                    <button class="btn btn-primary mx-2 rounded" type="submit">Send</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+
+        {% if discussions %}
+        <p class="fst-italic text-muted">Showing newest first</p>
+        {% for discussion in discussions %}
+        <div class="discussion-message">
+            <div class="d-flex align-items-center">
+                <img src="/media/{{ discussion.author.photo}}" alt="User Avatar">
+                <div>
+                    {% if discussion.author.role == "Faculty" %}
+                    <div class="d-inline-flex flex-wrap">
+                        <span class="author-name fw-bold">{{discussion.sent_by}}</span>
+                        <span class="badge bg-success mx-2">Course teacher</span>
+                    </div>
+                    {% else %}
+                    <span class="author-name fw-bold">{{discussion.sent_by}}</span>
+                    {% endif %}
+                    <span class="time text-muted mx-2">{{ discussion.time }}</span>
+                    <p>{{discussion.content}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="text-center fs-6 text-muted">
+            Be the first to start the discussion
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
