@@ -1,0 +1,148 @@
+{% extends 'index.html' %}
+{% block title %}{{ student.name }} | eLMS{% endblock title %}
+{% block profile %}
+    {% url 'profile' student.student_id %}
+{% endblock %}
+{% block user %}
+    {{ student.name }}
+{% endblock user %}
+{% block courses %}
+    {% url 'myCourses' %}
+{% endblock courses %}
+{% block allCourses %}
+    {% url 'courses' %}
+{% endblock %}
+{% block departments %}
+    {% url 'departments' %}
+{% endblock %}
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <style>
+
+      /* Enhanced CSS for Profile Section */
+
+/* Breadcrumb Styles */
+.breadcrumb-container {
+    padding: 20px 0;
+}
+
+/* Profile Container Styles */
+.profile-container {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    transition: box-shadow 0.3s ease;
+}
+
+.profile-container:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.2); /* Increase shadow on hover */
+}
+
+/* Profile Heading Styles */
+.profile-heading {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+/* Profile Image Styles */
+.profile-image img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 4px solid #007bff;
+    transition: transform 0.3s ease-in-out;
+}
+
+.profile-image img:hover {
+    transform: scale(1.1); /* Zoom effect on hover */
+}
+
+/* Profile Details Styles */
+.profile-details {
+    text-align: left;
+    color: #333;
+}
+
+.profile-details h5 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+/* Button Styles */
+.btn-border {
+    border: 2px solid #007bff;
+    color: #007bff;
+    background-color: transparent;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-border:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.btn-border:not(:last-child) {
+    margin-right: 20px;
+}
+
+  
+      </style>
+    <!-- Navigation links -->
+    <div class="container breadcrumb-container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb p-3">
+                <li class="breadcrumb-item active animate__animated animate__backInRight" aria-current="page">Profile</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="container profile-container">
+        <div class="row">
+            <div class="col-12">
+                <div class="profile-heading">
+                    <h2 class="fw-bold fs-5 my-3 text-muted text-center">Student Information</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <div class="profile-image d-flex justify-content-center">
+                    <img src="/media/{{ student.photo }}" alt="image" class="rounded-circle">
+                </div>
+            </div>
+            <div class="col-md-8 col-sm-12">
+                <div class="profile-details">
+                    <h5><span class="text-muted">Name:</span> {{ student.name }}</h5>
+                    <h5><span class="text-muted">ID:</span> {{ student.student_id }}</h5>
+                    <h5><span class="text-muted">Dept:</span> {{ student.department }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-12 text-center">
+                <a href="{% url 'changePasswordPrompt'  %}" class="btn btn-sm btn-border my-2">Change Password</a>
+                <a href="{% url 'changePhotoPrompt'  %}" class="btn btn-sm btn-border my-2">Change Profile Picture</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        setTimeout(function () {
+            $('.alert').alert('close');
+        }, 3000);
+    </script>
+{% endblock %}
