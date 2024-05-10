@@ -1,0 +1,218 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in | eLMS</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/icon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/icon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/icon/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/icon/site.webmanifest' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0">
+</head>
+<style>
+   /* Main container */
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5; /* Light grey background */
+}
+
+/* Sign-in section */
+.sign-in {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff; /* White background */
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Light shadow */
+    animation: fadeIn 0.5s ease forwards; /* Fade in animation */
+}
+
+/* Sign-in content */
+.signin-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Sign-in image */
+.signin-image {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+.signin-image img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* Sign-in form */
+.signin-form {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Form title */
+.form-title {
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #007bff; /* Primary color */
+}
+
+/* Form group */
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Form label */
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: #555; /* Text color */
+}
+
+/* Form input */
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #007bff; /* Blue border color on focus */
+}
+
+/* Button */
+.btn-login {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff; /* Primary button color */
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #0056b3; /* Darker color on hover */
+}
+
+/* Dropdown */
+.dropdown-toggle {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.dropdown-menu {
+    background-color: #fff; /* White background */
+    border: 1px solid #ccc;
+}
+
+.dropdown-item {
+    color: #000;
+}
+
+.dropdown-item:hover {
+    background-color: #f5f5f5; /* Light grey background on hover */
+}
+
+/* Admin link */
+.admin-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.admin-link:hover {
+    text-decoration: underline;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+
+</style>
+<body>
+
+    <div class="main">
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="{% static 'images/login-bg.jpg' %}" alt="sing up image" style="width: 100%;"></figure>
+                    </div>
+                    <div class="signin-form" style="max-width: 400px; margin: auto;">
+                        <h2 class="form-title" style="text-align: center;">Sign in to eLMS</h2>
+                        <form method="POST" class="register-form" id="login-form" style="margin-bottom: 20px;">
+                            {% csrf_token %}
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label for="{{ form.id.id_for_label }}" style="display: block; margin-bottom: 10px;">
+                                    <span class="material-symbols-outlined" style="vertical-align: text-bottom;">person</span>
+                                </label>
+                                {{ form.id }}
+                            </div>
+                            <div class="form-group" style="margin-bottom: 20px;">
+                                <label for="{{ form.password.id_for_label }}" style="display: block; margin-bottom: 10px;">
+                                    <span class="material-symbols-outlined" style="vertical-align: text-bottom;">lock</span>
+                                </label>
+                                {{ form.password }}
+                            </div>
+                            <div class="d-grid" style="margin-bottom: 20px;">
+                                <button class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2" type="submit">Sign in</button>
+                            </div>
+                        </form>
+                        <div class="d-flex justify-content-around flex-wrap" style="margin-bottom: 20px;">
+                            <div class="" style="margin-right: 10px;">
+                                <div class="dropdown">
+                                    
+                                </div>
+                            </div>
+                            <div class="">
+                                <a href="/admin" target="_blank" style="color: #007bff; text-decoration: none;">Sign in as Admin</a>
+                            </div>
+                        </div>
+                        {% if error_messages %}
+                        <!-- Error Alert -->
+                        <div class="alert alert-danger alert-dismissible fade show my-2" role="alert" style="margin-bottom: 20px;">
+                            {% for message in error_messages %}
+                            {{ message }}
+                            {% endfor %}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+</body>
+</html>
